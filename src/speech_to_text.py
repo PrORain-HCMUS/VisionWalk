@@ -40,7 +40,7 @@ def transcribe_audio(api_key, audio_file_path):
 
 # API key và tệp âm thanh
 api_key = "AIzaSyAAxFwP7gtAcf77YbyuyX_mFq3KfnmH7-8"  
-audio_file_path = "audio/weather_forecast.mp3" 
+audio_file_path = "assets/audio/weather_forecast.mp3" 
 
 # Gọi hàm
 transcribe_audio(api_key, audio_file_path)

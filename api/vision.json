@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "valid-spark-442908-k5",
+  "private_key_id": "502502fa5c344568a96867931957f234bd18720d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQChRnCveT2PWbw0\nVX/LA1/0vb6AAOsOggZGihPmNpKtaDNCrc0Gk771fB2l+613yF3MGC1GSeAvDlU8\nOl9U5odMje1ngw+EW8Q5AW9tD6ml5sFjB3Snc6NI9Fg0cEpO/zSfEJw6p/MPA7Pd\nVe2rCeW4FcSYv4M0dsr7LCeonDzdN6ywGPV17F6+3PBnpp29t2Ch7SrFR7Y045AH\nE3expVQYGCsvk3wSvud+QrdBoMbfg3y53icPXzhdby5DKAY9+EsT2BQcVEk6lZkG\nbTmnktyh0TOGNj8WnRxGU7XTxKS2W11tECPUJnMSjJwX9eSC+st1c1+DXIF+dSGh\nbXedFalLAgMBAAECggEAKOmXNZSirsZ7baVQ9X3mLk6iUJOrDbOjhuqJUMoAXLhF\n5MD1dZkuhNUXKl/V6kCsttVdSur70cQnkE9Yls+ifCO3GZ7QZWnoNfPswfSKu3j2\nDzq5d69ouV2vMKJZ339zaHTMxT6M9P6h9uDRGaY5ngD7ripLTRhjtuNFLktwT0fk\ntzcs84ZEp+FnnolFCTG69sycqktNjeJ1a1Ns+ADPyKeRb/HTuNuZu/7/YMsYvm+3\nplFoE9Oj/a1GBMv07UO511tGwMU+cnXmFaIORLZH0fVggSvNMLJQ5N62HuiSx+cS\nKctoswQXR9NvLbNPGRT43hrs5nkln17hZF/eXWu+6QKBgQDUgzGhr5XnT4YBsPRN\n7z9YtH2TPhI9vzb453KQRTz6eHzhK1NPF9WJDv22ftD7uGoeQfy533y1ZvW59mn6\n6g5VO5MDR8Yr09Un4CYvJPn1jjCscDSO0wGG5CF7xLFaVUvJjyJAwUnWVcOldNHU\nyid91StlbJvRFtxPUADGszGz4wKBgQDCRxjr90EBsQrEH6S+th7X1sbKoMMsXBUb\nhOdeWez4C/EV5toNqlYfr6kZjhbW6pPlxS9/A65wMA0iQgqF2LY+kYWPCCdsCTYH\nQ7Nz0iSMAk8Win7mV45JMu4o8S9N6dIdhwORScY99r1qMor+H6r0FdksLiQ+W98O\nPkfi1llBeQKBgHZGakodymWJ2gB49w+lF3GMStO3WTmqgbL4RcfL8UtJ4d8EWQKN\nNlho0oZOgIuIsO8UNM9SdjsUCbEtVwDCYaXIWWMbAE2GQX1HAJl+j+u97pMag/X1\ntETaFVSoPTkUffC5TAwUR78VzqT4powy0tXy3Ys+bl5pxcYStcvhEcmXAoGBAKUK\n9z4Gt9/zAj1o0HD/kKY2HH0pI4U82OWe+1spM+npYy8DBb1UNoQGm7ZNAlQjxe8N\nm/LgMsG14IJ47i2U1AXFZFwFRlA+Zvq25e1/2XJjx8JTd8jBGuxOawq3EkOzXr+c\n4kf8D4C2a2WbeH64cmeXY/5nWHztWUnlWPZ4uCypAoGACHgie2cVNCGt/QhSVbG5\n9jdqtuJTDkOEhBkk03oatpfYkL6AdIFs4RoCV25gFZy1wSV1RzB9OVkTfs5Vlafz\n1ZxSs5oG4zrkEwb77uo8PnkQhsttRzwgAH2ebBnULTBjCGxjKQCJDo7zbYA3++Ns\nEfJ9uk7XlL2kC3siIAo6vs0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "vision-supply@valid-spark-442908-k5.iam.gserviceaccount.com",
+  "client_id": "102237307741404489941",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vision-supply%40valid-spark-442908-k5.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
