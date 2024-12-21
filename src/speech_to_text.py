@@ -1,46 +1,33 @@
-import requests
-import base64
+from google.cloud import speech
+import io
 
-def transcribe_audio(api_key, audio_file_path):
-    # Đọc tệp âm thanh và mã hóa base64
-    with open(audio_file_path, "rb") as audio_file:
-        audio_content = base64.b64encode(audio_file.read()).decode("utf-8")
+def transcribe_audio_with_service_account(json_key_file, audio_file_path):
+    # Tạo client với tệp JSON chứa service account
+    client = speech.SpeechClient.from_service_account_file(json_key_file)
 
-    # URL endpoint của Google Speech-to-Text API
-    url = f"https://speech.googleapis.com/v1/speech:recognize?key={api_key}"
+    # Đọc nội dung âm thanh
+    with io.open(audio_file_path, "rb") as audio_file:
+        content = audio_file.read()
 
     # Cấu hình yêu cầu
-    headers = {"Content-Type": "application/json"}
-    data = {
-        "config": {
-            "encoding": "MP3",  # Định dạng tệp âm thanh là MP3
-            "sampleRateHertz": 16000,  # Tần số mẫu (thường dùng 16 kHz)
-            "languageCode": "en-US"  # Ngôn ngữ (thay "vi-VN" nếu là tiếng Việt) en-US
-        },
-        "audio": {
-            "content": audio_content  # Nội dung âm thanh đã mã hóa base64
-        }
-    }
+    audio = speech.RecognitionAudio(content=content)
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.MP3,  # Định dạng âm thanh
+        sample_rate_hertz=16000,  # Tần số mẫu
+        language_code="en-US",  # Ngôn ngữ (thay "vi-VN" nếu là tiếng Việt)
+    )
 
-
-    # Gửi yêu cầu POST tới API
-    response = requests.post(url, headers=headers, json=data)
+    # Gửi yêu cầu tới API
+    response = client.recognize(config=config, audio=audio)
 
     # Xử lý kết quả
-    if response.status_code == 200:
-        results = response.json().get("results", [])
-        for result in results:
-            transcript = result["alternatives"][0]["transcript"]
-            confidence = result["alternatives"][0]["confidence"]
-            print(f"Transcript: {transcript}")
-            print(f"Confidence: {confidence}")
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.json())
+    for result in response.results:
+        print(f"Transcript: {result.alternatives[0].transcript}")
+        print(f"Confidence: {result.alternatives[0].confidence}")
 
-# API key và tệp âm thanh
-api_key = "AIzaSyAAxFwP7gtAcf77YbyuyX_mFq3KfnmH7-8"  
-audio_file_path = "assets/audio/weather_forecast.mp3" 
+# Đường dẫn tới tệp JSON và tệp âm thanh
+json_key_file = "api/stt.json"  # Tệp JSON service account
+audio_file_path = "assets/audio/weather_forecast.mp3"  # Đường dẫn tới tệp âm thanh
 
 # Gọi hàm
-transcribe_audio(api_key, audio_file_path)
+transcribe_audio_with_service_account(json_key_file, audio_file_path)
