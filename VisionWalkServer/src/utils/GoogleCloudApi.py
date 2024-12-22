@@ -22,7 +22,7 @@ class GoogleCloudApi:
 
     def clean_text(self, text: str) -> str:
         text = text.lower()
-        text = text.replace('\n', '.').replace('\r', '.').replace('\t', ' ')
+        text = text.replace('\n', '.').replace('\r', '.').replace('\t', ' ').replace('*', '')
         text = re.sub(r'\s+', ' ', text)
         text = text.strip()
         return text

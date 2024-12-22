@@ -22,7 +22,6 @@ const analyzeImage = async (formData: FormData): Promise<AnalyzeImageResponse> =
         }
 
         const data = await response.json();
-        console.log('Server response:', data);
         return data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
