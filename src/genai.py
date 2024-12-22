@@ -37,7 +37,7 @@ def generate_detailed_description(labels):
 
 
 # Đường dẫn hình ảnh
-image_path = "assets/img/vision test/test1.png"  # Thay đường dẫn
+image_path = "assets/img/vision test/test1.png"
 
 # Phân tích hình ảnh với Vision API
 labels = analyze_image_with_vision(image_path)

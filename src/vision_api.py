@@ -15,7 +15,20 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro")
 def generate_text_of_img(img_path):
     img = PIL.Image.open(img_path)
 
-    prompt = "Liệt kê các chướng ngại vật, các biển báo và các vật có thể gây nguy hiểm đến người đi bộ. Cho biết các vật thể đó nằm bên nào (trước mặt, trái, phải). Khoảng cách ước lượng đến vật thể đó khoảng bao nhiêu mét(cố gắng ước lượng chính xác, cho biết độ chính xác của ước lượng)? Trả về text không định dạng gì như xuống dòng hay in dậm,... và không thêm nội dung dư thừa."
+    prompt = """Hãy mô tả môi trường xung quanh như đang hướng dẫn một người khiếm thị, tập trung vào:
+    1. Các chướng ngại vật (ví dụ: đống cát, gạch đá, rãnh nước, cột điện, xe đạp...)
+    2. Biển báo và biển chỉ dẫn
+    3. Các vật có thể gây nguy hiểm
+    4. Điều kiện mặt đường (ví dụ: trơn trượt, gồ ghề, có nước...)
+    
+    Cho mỗi vật thể/yếu tố, hãy:
+    - Xác định vị trí tương đối (trước mặt, bên trái, bên phải)
+    - Ước lượng khoảng cách từ vị trí người quan sát (càng chính xác càng tốt, nếu không chắc chắn thì cho biết khoảng)
+    - Mức độ nguy hiểm hoặc ảnh hưởng đến việc di chuyển
+    
+    Trả lời bằng giọng điệu tự nhiên, như đang nói chuyện trực tiếp với người khiếm thị. 
+    Nếu có yếu tố nguy hiểm cần đặc biệt chú ý, hãy nhấn mạnh điều đó.
+    Không thêm định dạng văn bản hay nội dung không cần thiết."""
 
     response = model.generate_content([img, prompt])
 
