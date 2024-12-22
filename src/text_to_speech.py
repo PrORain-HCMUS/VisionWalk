@@ -8,7 +8,11 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "api/tts.json"
 client = texttospeech.TextToSpeechClient()
 
 # Cấu hình đầu vào văn bản
-text = "chốt lại quy trình để code giao diện trước nhé: mở app lên, nếu muốn tắ thì app sẽ yêu cầu xác nhận kép bằng cách giữ màn hình 5s + giọng  nói. Như vậy sẽ tránh trường hợp người mù họ lỡ tay tắt app dẫn đến không dùng được nữa. Phần chính giao diện thì chỉ có lưu lại những detection của nó và route lại đường đi của người mù để làm dữ liệu, mỗi khi họ kích hoạt chức năng detect bằng nút vật lý (tăng hoặc giảm âm lượng)/ giọng nói (tùy các bạn chọn). Sau khi người mù kích hoạt chức năng thì app trả về thông tin text ở màn hình rồi giọng nói (text to speech) để người mù họ biết."
+text = """Thái độ quan trọng hơn quá khứ, hơn giáo dục, hơn tiền bạc, hơn hoàn cảnh, hơn những gì mọi người làm hoặc nói. Nó quan trọng hơn ngoại hình, năng khiếu hay kỹ năng. – Charles. Swindoll
+Nghệ thuật không cần phải là ánh trăng lừa dối, nghệ thuật không nên là ánh trăng lừa dối, nghệ thuật có thể chỉ là tiếng đau khổ kia thoát ra từ những kiếp lầm than. - Nam Cao
+Duy chỉ có gia đình, người ta mới tìm được chốn nương thân để chống lại tai ương của số phận. - Euripides
+Hãy nhặt những chữ ở đời để viết nên trang. - Chế Lan Viên
+Biểu hiện đầu tiên của tình yêu chân thật ở người con trai là sự rụt rè, còn ở người con gái là sự táo bạo. – Victor Hugo"""
 synthesis_input = texttospeech.SynthesisInput(text=text)
 
 # Cấu hình giọng nói
