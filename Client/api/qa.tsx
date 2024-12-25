@@ -1,20 +1,29 @@
-import axios from "axios";
+import { ServerResponse } from "@/utils/types"
 
-interface QARequest {
-    question: string
-}
-
-interface QAResponse {
-    answer: string;
-}
-
-const qa = async (question: string): Promise<QAResponse> => {
+const qa = async (formData: FormData): Promise<ServerResponse> => {
     try {
-        const response = await axios.post<QAResponse>(`${process.env.EXPO_PUBLIC_API_URL}/qa`, { question })
-        return response.data
+        console.log('Fetching data...')
+        const response = await fetch(
+            `${process.env.EXPO_PUBLIC_API_URL}/qa`,
+            {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        )
+        console.log('Fetched data successfully!')
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+
     } catch (error) {
-        console.error('Error in QA:', error)
-        throw error
+        throw error;
     }
 }
 
