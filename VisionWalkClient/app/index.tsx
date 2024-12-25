@@ -1,5 +1,7 @@
 import analyzeImage from '@/api/analyzeImage';
+import qa from '@/api/qa';
 import { testConnection } from '@/api/test';
+import Wave from '@/components/Wave';
 import { Audio } from 'expo-av';
 import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -8,16 +10,18 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
-
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const [replay, setReplay] = useState(false)
   const [mediaLibraryPermission, requestMediaLibraryPermission] = MediaLibrary.usePermissions();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const volumePressCount = useRef(0)
-  const lastPressTime = useRef(0)
-  const cameraRef = useRef<CameraView>(null)
-
+  const [currentAudioContent, setCurrentAudioContent] = useState<string>('');
+  const cameraRef = useRef<CameraView>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const silenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const recordingStartTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -26,9 +30,8 @@ export default function App() {
       setHasPermission(status === 'granted' && mediaStatus === 'granted');
     })();
 
-    testConnection()
+    testConnection();
   }, []);
-
 
   const captureAndSendScreenshot = async () => {
     try {
@@ -59,32 +62,19 @@ export default function App() {
         formData.append('file', photoFile);
 
         console.log('Sending photo to server...');
-        const audioResponse = await analyzeImage(formData);
+        const response = await analyzeImage(formData);
 
-        if (audioResponse?.audio) {
-          console.log('Playing audio...');
-          await playAudio(audioResponse.audio);
-          console.log('Audio played.');
+        if (response?.audio) {
+          console.log('Got audio response, setting up playback...');
+          setCurrentAudioContent(response.audio);
         }
       }
     } catch (error) {
       console.error('Error in captureAndSendScreenshot:', error);
-
+      setCurrentAudioContent('');
     }
-  }
+  };
 
-  const playAudio = async (audioContent: string) => {
-    try {
-      console.log('Loading audio...');
-      const soundObject = new Audio.Sound()
-      await soundObject.loadAsync({ uri: `data:audio/mpeg;base64,${audioContent}` });
-      console.log('Audio loaded. Playing...');
-      await soundObject.playAsync()
-      console.log('Audio playback started.');
-    } catch (error) {
-      console.error('Error paying audio:', error)
-    }
-  }
 
   if (hasPermission === null) {
     return (
@@ -103,6 +93,67 @@ export default function App() {
     );
   }
 
+  const startRecording = async () => {
+    try {
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
+      const { recording } = await Audio.Recording.createAsync(
+        Audio.RecordingOptionsPresets.HIGH_QUALITY,
+        (status) => {
+          if (status.metering && status.metering < -50) { // Điều chỉnh ngưỡng im lặng
+            const currentTime = Date.now();
+            if (recordingStartTimeRef.current &&
+              currentTime - recordingStartTimeRef.current > 3000) { // 3 giây
+              stopRecording();
+            }
+          }
+        },
+        500 // Check mỗi 500ms
+      );
+
+      recordingStartTimeRef.current = Date.now();
+      setRecording(recording);
+      setIsRecording(true);
+
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  };
+
+  const stopRecording = async () => {
+    if (!recording) return;
+
+    try {
+      await recording.stopAndUnloadAsync();
+      const uri = recording.getURI();
+
+      if (uri) {
+        const formData = new FormData()
+        formData.append('audio', {
+          uri: uri,
+          type: 'audio/wav',
+          name: 'audio.wav',
+        } as any)
+
+        const response = await qa(formData)
+
+        if (response?.audio) {
+          console.log('Got audio response, setting up playback...');
+          setCurrentAudioContent(response.audio);
+        }
+      }
+
+      setRecording(null);
+      setIsRecording(false);
+    } catch (err) {
+      console.error('Failed to stop recording', err);
+    }
+  };
+
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
@@ -110,6 +161,31 @@ export default function App() {
   return (
     <View style={styles.container}>
       <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
+        {currentAudioContent && (
+          <View style={styles.waveContainer}>
+            <Wave audioContent={currentAudioContent} replay={replay} onReplayComplete={() => setReplay(false)} />
+          </View>
+        )}
+        <View style={styles.optionContainer}>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              isRecording && styles.recordingButton
+            ]}
+            onPress={isRecording ? stopRecording : startRecording}
+          >
+            <Text style={styles.captureText}>
+              {isRecording ? 'Stop' : 'Mic'}
+            </Text>
+          </TouchableOpacity>
+
+          {currentAudioContent && !replay && (
+            <TouchableOpacity style={styles.captureButton} onPress={() => setReplay(true)}  >
+              <Text style={styles.captureText}>Replay</Text>
+            </TouchableOpacity>
+          )}
+
+        </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
             <Link href="/routeTracking">
@@ -138,6 +214,26 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
     width: '100%',
+  },
+  waveContainer: {
+    position: 'absolute',
+    bottom: 108,
+    left: 0,
+    right: 0,
+    height: 100,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  optionContainer: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: 20,
+    paddingHorizontal: 20
   },
   buttonContainer: {
     flex: 1,
@@ -188,5 +284,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  recordingButton: {
+    backgroundColor: 'rgba(255,0,0,0.5)',
   },
 });
