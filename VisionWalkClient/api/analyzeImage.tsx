@@ -1,10 +1,7 @@
-import axios from 'axios';
+import { ServerResponse } from "@/utils/types";
 
-interface AnalyzeImageResponse {
-    audio: string;
-}
 
-const analyzeImage = async (formData: FormData): Promise<AnalyzeImageResponse> => {
+const analyzeImage = async (formData: FormData): Promise<ServerResponse> => {
     try {
         const response = await fetch(
             `${process.env.EXPO_PUBLIC_API_URL}/analyze-image`,
@@ -24,15 +21,6 @@ const analyzeImage = async (formData: FormData): Promise<AnalyzeImageResponse> =
         const data = await response.json();
         return data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            console.error('Axios error:', {
-                message: error.message,
-                response: error.response?.data,
-                status: error.response?.status,
-            });
-        } else {
-            console.error('Unexpected error:', error);
-        }
         throw error;
     }
 }

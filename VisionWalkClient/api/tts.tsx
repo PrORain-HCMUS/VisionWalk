@@ -1,16 +1,9 @@
+import { ServerResponse } from "@/utils/types"
 import axios from "axios"
 
-interface TTSRequest {
-    text: string
-}
-
-interface TTSResponse {
-    audio_content: string
-}
-
-const tts = async (text: string): Promise<TTSResponse> => {
+const tts = async (text: string): Promise<ServerResponse> => {
     try {
-        const response = await axios.post<TTSResponse>(`${process.env.EXPO_PUBLIC_API_URL}/tts`, { text })
+        const response = await axios.post<ServerResponse>(`${process.env.EXPO_PUBLIC_API_URL}/tts`, { text })
         return response.data
     } catch (error) {
         console.error('Error in TTS:', error)
