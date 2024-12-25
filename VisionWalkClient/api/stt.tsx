@@ -1,15 +1,13 @@
+import { ServerResponse } from "@/utils/types";
 import axios from "axios";
 
-interface STTResponse {
-    text: string
-}
 
-const stt = async (audioFile: File): Promise<STTResponse> => {
+const stt = async (audioFile: File): Promise<ServerResponse> => {
     try {
         const formData = new FormData()
         formData.append('file', audioFile);
 
-        const response = await axios.post<STTResponse>(`${process.env.EXPO_PUBLIC_API_URL}/stt`, formData, {
+        const response = await axios.post<ServerResponse>(`${process.env.EXPO_PUBLIC_API_URL}/stt`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

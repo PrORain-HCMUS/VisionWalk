@@ -4,8 +4,10 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from PIL import Image
 from utils.GoogleCloudApi import GoogleCloudApi
 from utils.types import QARequest, TTSRequest
+from utils.denoised_base64 import denoised_base64
+import uvicorn
 
-CREDENTIALS = r"D:\Project\NLP\VisionWalk\VisionWalkServer\private\credentials.json"
+CREDENTIALS = "VisionWalkServer/private/credentials.json"
 
 googleCloudApi = GoogleCloudApi(CREDENTIALS)
 
@@ -91,13 +93,23 @@ async def analyze_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/qa", status_code=200)
-def qa_endpoint(request: QARequest):
+async def qa_endpoint(audio: UploadFile = File(...)):
     """
     Endpoint nhận câu hỏi và trả về câu trả lời từ hàm QA.
     """
     try:
-        answer = QA(request.question)
-        return {"answer": answer}
+        print('Received audio file:', audio.filename)
+        audio_content = await audio.read()
+        text = googleCloudApi.stt(audio_content)
+        print('Converted audio to text:', text)
+        print('Converted audio to text:', text)
+        answer = QA(text)
+        print('Generated answer:', answer)
+        audio_response = googleCloudApi.tts(answer)
+        print('Converted answer to audio')
+        audio_base64 = base64.b64encode(audio_response).decode('utf-8')
+        print('Sending response')
+        return {"audio": audio_base64, "text": answer}
     except Exception as e:
         return HTTPException(status_code=500, detail=str(e))
 
