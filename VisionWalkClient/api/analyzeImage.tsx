@@ -1,9 +1,7 @@
-interface AnalyzeImageResponse {
-    audio: string;
-    text: string
-}
+import { ServerResponse } from "@/utils/types";
 
-const analyzeImage = async (formData: FormData): Promise<AnalyzeImageResponse> => {
+
+const analyzeImage = async (formData: FormData): Promise<ServerResponse> => {
     try {
         const response = await fetch(
             `${process.env.EXPO_PUBLIC_API_URL}/analyze-image`,

@@ -1,9 +1,6 @@
-interface QAResponse {
-    audio: string;
-    text: string
-}
+import { ServerResponse } from "@/utils/types"
 
-const qa = async (formData: FormData): Promise<QAResponse> => {
+const qa = async (formData: FormData): Promise<ServerResponse> => {
     try {
         console.log('Fetching data...')
         const response = await fetch(

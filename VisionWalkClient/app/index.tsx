@@ -2,10 +2,13 @@ import analyzeImage from '@/api/analyzeImage';
 import qa from '@/api/qa';
 import { testConnection } from '@/api/test';
 import Wave from '@/components/Wave';
+import { databaseHelper } from '@/db/databaseHelper';
+import { saveImageToLocal } from '@/utils/userInfo';
 import { Audio } from 'expo-av';
 import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { Link } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -22,6 +25,8 @@ export default function App() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const silenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const recordingStartTimeRef = useRef<number | null>(null);
+  const db = useSQLiteContext()
+
 
   useEffect(() => {
     (async () => {
@@ -52,6 +57,8 @@ export default function App() {
           height: photo.height,
         });
 
+        const imgLocalPath = await saveImageToLocal(photo.uri)
+
         const formData = new FormData();
         const photoFile = {
           uri: Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
@@ -67,6 +74,15 @@ export default function App() {
         if (response?.audio) {
           console.log('Got audio response, setting up playback...');
           setCurrentAudioContent(response.audio);
+
+          if (response?.text) {
+            await databaseHelper.addHistoryItem(db, {
+              id: 0,
+              imgUrl: imgLocalPath,
+              text: response.text,
+              audiobase64: response.audio
+            })
+          }
         }
       }
     } catch (error) {
