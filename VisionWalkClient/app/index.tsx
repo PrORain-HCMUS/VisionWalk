@@ -4,6 +4,7 @@ import { testConnection } from '@/api/test';
 import Wave from '@/components/Wave';
 import { databaseHelper } from '@/db/databaseHelper';
 import { saveImageToLocal } from '@/utils/userInfo';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -190,32 +191,45 @@ export default function App() {
             ]}
             onPress={isRecording ? stopRecording : startRecording}
           >
-            <Text style={styles.captureText}>
-              {isRecording ? 'Stop' : 'Mic'}
-            </Text>
+            <View style={styles.buttonContent}>
+              <MaterialIcons name="mic" size={28} color="white" />
+              <Text style={styles.captureText}>
+                {isRecording ? 'Stop' : 'Mic'}
+              </Text>
+            </View>
           </TouchableOpacity>
 
           {currentAudioContent && !replay && (
-            <TouchableOpacity style={styles.captureButton} onPress={() => setReplay(true)}  >
-              <Text style={styles.captureText}>Replay</Text>
+            <TouchableOpacity style={styles.captureButton} onPress={() => setReplay(true)}>
+              <View style={styles.buttonContent}>
+                <MaterialIcons name="replay" size={28} color="white" />
+                <Text style={styles.captureText}>Replay</Text>
+              </View>
             </TouchableOpacity>
           )}
-
         </View>
+
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
-            <Link href="/routeTracking">
+          <Link href="/routeTracking" style={styles.button}>
+            <View style={styles.buttonContent}>
+              <MaterialIcons name="map" size={28} color="white" />
               <Text style={styles.text}>Route Tracking</Text>
-            </Link>
-          </TouchableOpacity>
+            </View>
+          </Link>
+
           <TouchableOpacity style={styles.captureButton} onPress={captureAndSendScreenshot}>
-            <Text style={styles.captureText}>Capture</Text>
+            <View style={styles.buttonContent}>
+              <MaterialIcons name="camera-alt" size={28} color="white" />
+              <Text style={styles.captureText}>Capture</Text>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Link href="/userData">
+
+          <Link href="/userData" style={styles.button}>
+            <View style={styles.buttonContent}>
+              <MaterialIcons name="person" size={28} color="white" />
               <Text style={styles.text}>User Data</Text>
-            </Link>
-          </TouchableOpacity>
+            </View>
+          </Link>
         </View>
       </CameraView>
     </View>
@@ -266,15 +280,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.3)',
     borderRadius: 50,
   },
-  button: {
-    padding: 15,
-    width: 80,
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    borderRadius: 30,
-  },
   text: {
     fontSize: 12,
     color: 'white',
@@ -286,15 +291,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  captureButton: {
-    padding: 15,
-    width: 80,
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,0,0,0.5)',
-    borderRadius: 30,
-  },
   captureText: {
     fontSize: 12,
     color: 'white',
@@ -303,5 +299,30 @@ const styles = StyleSheet.create({
   },
   recordingButton: {
     backgroundColor: 'rgba(255,0,0,0.5)',
+  },
+
+  buttonContent: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  button: {
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 20,
+  },
+  captureButton: {
+    padding: 8,
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,0,0,0.5)',
+    borderRadius: 20,
   },
 });
