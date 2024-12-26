@@ -1,4 +1,4 @@
-import os, base64, google.generativeai as genai
+import os, base64, google.generativeai as genai, numpy as np, soundfile as sf
 from io import BytesIO
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from PIL import Image
@@ -94,23 +94,59 @@ async def analyze_image(file: UploadFile = File(...)):
 @app.post("/qa", status_code=200)
 async def qa_endpoint(audio: UploadFile = File(...)):
     """
-    Endpoint nhận câu hỏi và trả về câu trả lời từ hàm QA.
+    Endpoint nhận file audio và xử lý nó để trả về câu trả lời.
     """
     try:
         print('Received audio file:', audio.filename)
+        print('Content type:', audio.content_type)
+        
+        # Đọc nội dung audio
         audio_content = await audio.read()
-        text = googleCloudApi.stt(audio_content)
-        print('Converted audio to text:', text)
-        print('Converted audio to text:', text)
-        answer = QA(text)
-        print('Generated answer:', answer)
-        audio_response = googleCloudApi.tts(answer)
-        print('Converted answer to audio')
-        audio_base64 = base64.b64encode(audio_response).decode('utf-8')
-        print('Sending response')
-        return {"audio": audio_base64, "text": answer}
+        print('Audio content length:', len(audio_content))
+        
+        # Convert audio content to base64
+        audio_base64 = base64.b64encode(audio_content).decode('utf-8')
+        
+        # Apply noise reduction
+        try:
+            processed_audio_base64 = denoised_base64(audio_base64)
+            if processed_audio_base64:
+                # Decode back to binary for STT
+                audio_content = base64.b64decode(processed_audio_base64)
+                text = googleCloudApi.stt(audio_content)
+            else:
+                # Fallback to original audio if denoising fails
+                text = googleCloudApi.stt(audio_content)
+                
+            print('Converted audio to text:', text)
+            
+            if not text:
+                raise HTTPException(status_code=400, detail="Speech recognition failed")
+            
+            answer = QA(text)
+            print('Generated answer:', answer)
+            
+            audio_response = googleCloudApi.tts(answer)
+            audio_base64_response = base64.b64encode(audio_response).decode('utf-8')
+            
+            return {"audio": audio_base64_response, "text": answer}
+            
+        except Exception as audio_error:
+            print(f"Error processing audio: {str(audio_error)}")
+            # Fallback to original audio content
+            text = googleCloudApi.stt(audio_content)
+            if not text:
+                raise HTTPException(status_code=400, detail="Speech recognition failed")
+            
+            answer = QA(text)
+            audio_response = googleCloudApi.tts(answer)
+            audio_base64 = base64.b64encode(audio_response).decode('utf-8')
+            
+            return {"audio": audio_base64, "text": answer}
+            
     except Exception as e:
-        return HTTPException(status_code=500, detail=str(e))
+        print('Error in qa_endpoint:', str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/stt", status_code=200)
 async def stt_endpoint(file: UploadFile = File(...)):
