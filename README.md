@@ -173,11 +173,11 @@ npx expo start
 Finally we would like to introduce the contributors of this repo:
 
 |     | Contributor          | Student ID | Github                               |  
-|:---:|:--------------------:|:----------:|:------------------------------------:|  
+|-----|----------------------|------------|--------------------------------------|  
 | 1   | Dai-Hoa Le           | `22120108` | [JustinHoa](https://github.com/JustinHoa) |    
 | 2   | Tuong-Bach-Hy Nguyen | `22120455` | [nguyentuongbachhy](https://github.com/nguyentuongbachhy) |  
 | 3   | Hai_Luu_Danh Lieu    | `22120459` | [lhldanh](https://github.com/lhldanh) |  
-| 4   | Hoang-Vu Le          | `22120461` | [PrORain-HCMUS](https://github.com/PrORain-HCMUS) | 
+| 4   | Hoang-Vu Le          | `22120461` | [PrORain-HCMUS](https://github.com/PrORain-HCMUS) |
 
 
 <img alt="Star the Expo repo on GitHub to support the project" src="https://user-images.githubusercontent.com/9664363/185428788-d762fd5d-97b3-4f59-8db7-f72405be9677.gif" width="50%">
