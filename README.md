@@ -6,7 +6,7 @@ For better understanding and detailed explanations, our report is [here](doc/Rep
 
 
 <div align="center">
-  <img src="assets/img/VW/logo_vw.png" alt="VisionWalk Logo" width="200"/>
+  <img src="assets/img/logo_vw.png" alt="VisionWalk Logo" width="200"/>
 </div>
 
 ## Introduction  
@@ -91,7 +91,7 @@ You can access [this repository](https://github.com/expo/expo) or below to learn
 >   
 > <p align="center">  
 >   <a href="https://expo.dev/">  
->     <img alt="expo sdk" height="128" src="./.github/resources/banner.png">  
+>     <img alt="expo sdk" height="128" src="assets/img/expo.png">  
 >     <h1 align="center">Expo</h1>  
 >   </a>  
 > </p>  
