@@ -118,18 +118,43 @@ export default function App() {
         playsInSilentModeIOS: true,
       });
 
+      // Sử dụng RecordingOptionsPresets
+      const recordingOptions = {
+        ...Audio.RecordingOptionsPresets.HIGH_QUALITY,
+        android: {
+          ...Audio.RecordingOptionsPresets.HIGH_QUALITY.android,
+          extension: '.wav',
+          outputFormat: Audio.AndroidOutputFormat.MPEG_4,  // hoặc WAV nếu có
+          audioEncoder: Audio.AndroidAudioEncoder.AAC,
+          sampleRate: 44100,
+          numberOfChannels: 1,
+          bitRate: 128000,
+        },
+        ios: {
+          ...Audio.RecordingOptionsPresets.HIGH_QUALITY.ios,
+          extension: '.wav',
+          audioQuality: Audio.IOSAudioQuality.HIGH,
+          sampleRate: 44100,
+          numberOfChannels: 1,
+          bitRate: 128000,
+          linearPCMBitDepth: 16,
+          linearPCMIsBigEndian: false,
+          linearPCMIsFloat: false,
+        },
+      };
+
       const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY,
+        recordingOptions,
         (status) => {
-          if (status.metering && status.metering < -50) { // Điều chỉnh ngưỡng im lặng
+          if (status.metering && status.metering < -50) {
             const currentTime = Date.now();
             if (recordingStartTimeRef.current &&
-              currentTime - recordingStartTimeRef.current > 3000) { // 3 giây
+              currentTime - recordingStartTimeRef.current > 3000) {
               stopRecording();
             }
           }
         },
-        500 // Check mỗi 500ms
+        500
       );
 
       recordingStartTimeRef.current = Date.now();
@@ -142,19 +167,26 @@ export default function App() {
   };
 
   const stopRecording = async () => {
-    if (!recording) return;
+    if (!recording || !isRecording) return;
 
     try {
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
+      setIsRecording(false);
+      const currentRecording = recording;
+      setRecording(null);
+
+      await currentRecording.stopAndUnloadAsync();
+      const uri = currentRecording.getURI();
+
 
       if (uri) {
+        console.log('Recording URI:', uri);
+
         const formData = new FormData()
         formData.append('audio', {
           uri: uri,
           type: 'audio/wav',
           name: 'audio.wav',
-        } as any)
+        } as any);
 
         const response = await qa(formData)
 
@@ -163,9 +195,6 @@ export default function App() {
           setCurrentAudioContent(response.audio);
         }
       }
-
-      setRecording(null);
-      setIsRecording(false);
     } catch (err) {
       console.error('Failed to stop recording', err);
     }
@@ -195,6 +224,15 @@ export default function App() {
               <MaterialIcons name="mic" size={28} color="white" />
               <Text style={styles.captureText}>
                 {isRecording ? 'Stop' : 'Mic'}
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <View style={styles.buttonContent}>
+              <MaterialIcons name="flip-camera-android" size={28} color="white" />
+              <Text style={styles.captureText}>
+                Flip
               </Text>
             </View>
           </TouchableOpacity>
