@@ -5,9 +5,11 @@ VisionWalk - A mobile AI app for the visually impaired, ensuring safety and inde
 For better understanding and detailed explanations, our report is [here](doc/Report.pdf).
 
 
-<div align="center">
-  <img src="assets/img/logo_vw.png" alt="VisionWalk Logo" width="200"/>
+<div align="center">  
+  
+![VisionWalk logo](assets/img/logo_vw.png)  
 </div>
+
 
 ## Introduction  
 
