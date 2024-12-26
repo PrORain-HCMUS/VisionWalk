@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
-    "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
     "axios": "^1.7.9",
@@ -26,17 +25,14 @@
     "expo-camera": "~16.0.10",
     "expo-constants": "~17.0.3",
     "expo-device": "~7.0.1",
-    "expo-file-system": "~18.0.6",
     "expo-font": "~13.0.2",
     "expo-gl": "~15.0.2",
     "expo-haptics": "~14.0.0",
-    "expo-image-picker": "~16.0.3",
     "expo-linking": "~7.0.3",
     "expo-location": "~18.0.4",
     "expo-media-library": "~17.0.4",
     "expo-router": "4.0.15",
     "expo-splash-screen": "~0.29.18",
-    "expo-sqlite": "~15.0.3",
     "expo-status-bar": "~2.0.0",
     "expo-symbols": "~0.2.0",
     "expo-system-ui": "~4.0.6",
@@ -51,7 +47,11 @@
     "react-native-screens": "4.4.0",
     "react-native-svg": "15.8.0",
     "react-native-web": "~0.19.13",
-    "react-native-webview": "13.12.5"
+    "react-native-webview": "13.12.5",
+    "expo-sqlite": "~15.0.3",
+    "expo-file-system": "~18.0.6",
+    "expo-image-picker": "~16.0.3",
+    "@react-native-community/datetimepicker": "8.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
