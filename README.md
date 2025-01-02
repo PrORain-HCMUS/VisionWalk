@@ -154,16 +154,18 @@ cd https://github.com/PrORain-HCMUS/VisionWalk
 
 To experience the VisionWalk application on your mobile device during the `demo phase`, please follow these steps:  
 
-1. **Connect Your Device**: Use a USB cable to connect your mobile device to your laptop.  
+1. **Connect Your Device**: Use a USB cable to connect your mobile device to your laptop.
 
-2. **Set up Server**: If you haven't already, start the server by running:  
+2. **Create new credential**: Github's authority doesn't allow us to upload our key in VisionWalkServer/private, so you may need to get your own ones from Google Cloud, for TTS and TTS. Sorry for the unconvenience guys!
+
+3. **Set up Server**: If you haven't already, start the server by running:  
 
 ```bash
 cd VisionWalkServer/src/vision_api.py
 python vision_api.py
 ```
 
-3. **Set up Client**: Next, start the client by running:
+4. **Set up Client**: Next, start the client by running:
 ```bash
 cd VisionWalkClient
 npx expo start
