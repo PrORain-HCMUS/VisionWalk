@@ -16,8 +16,8 @@ from RedisConfig import redis_config, get_redis
 from redis import asyncio as aioredis
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-CREDENTIALS = r"D:\Project\NLP\VisionWalk\VisionWalkServer\private\credentials.json"
-FIREBASE_ADMIN_CREDENTIALS = r"D:\Project\NLP\VisionWalk\VisionWalkServer\private\firebase-admin.json"
+CREDENTIALS = r"D:\Documents\VisionWalk\VisionWalkServer\private\credentials.json"
+FIREBASE_ADMIN_CREDENTIALS = r"D:\Documents\VisionWalk\VisionWalkServer\private\firebase-admin.json"
 
 assert os.path.exists(CREDENTIALS), f"Credentials file not found at {CREDENTIALS}"
 assert os.path.exists(FIREBASE_ADMIN_CREDENTIALS), f"firebase admin credentials file not found at {FIREBASE_ADMIN_CREDENTIALS}"

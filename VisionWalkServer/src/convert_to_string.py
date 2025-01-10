@@ -21,8 +21,8 @@ def mp3_to_ascii_string(file_path):
         return None
 
 if __name__ == "__main__":
-    file_path = r"D:\Project\NLP\VisionWalk\VisionWalkClient\assets\audios\ClearMind.mp3"
+    file_path = r"D:\Documents\VisionWalk\VisionWalkClient\assets\audios\ClearMind.mp3"
     ascii_content = mp3_to_ascii_string(file_path)
     if ascii_content:
-        with open(r"D:\Project\NLP\VisionWalk\VisionWalkClient\assets\texts\audio_base64.txt", "w", encoding='utf-8') as f:
+        with open(r"D:\Documents\VisionWalk\VisionWalkClient\assets\texts\audio_base64.txt", "w", encoding='utf-8') as f:
             f.write(ascii_content)
