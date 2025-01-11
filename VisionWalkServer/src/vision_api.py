@@ -71,7 +71,16 @@ imagePreprocessor = ImagePreprocessor()
 audioPreprocessor = AudioPreprocessor()
 
 genai.configure(api_key="AIzaSyBX9YVkHUxZCrXxq7AFALma6lZUEArtlb8")
-model = genai.GenerativeModel(model_name="gemini-1.5-pro")
+generation_config = {
+    "max_output_tokens": 150,  # Approximately 100-150 words
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 40
+}
+model = genai.GenerativeModel(
+    model_name="gemini-1.5-pro",
+    generation_config=generation_config
+)
 
 class UserUpdate(BaseModel):
     displayName: Optional[str] = None
@@ -404,12 +413,21 @@ async def startup_event():
 @lru_cache(maxsize=100)
 def generate_text_of_text(text: str) -> str:
     try:
-        prompt = text
+        prompt = f"""
+        Hãy tóm tắt nội dung câu trả lời:
+        {text}
+        
+        Yêu cầu:
+        - Tổng hợp trong 60-80 từ
+        - Chỉ lấy những thông tin quan trọng và cốt lõi nhất
+        - Phải đảm bảo câu cuối được trọn vẹn, không bị cắt ngang
+        - Nếu không đủ chỗ để nêu hết, hãy chọn lọc thông tin quan trọng nhất
+        """
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
-        print(f"Image analysis error: {str(e)}")
-        return " Không thể trả lời câu hỏi này"
+        print(f"Text analysis error: {str(e)}")
+        return "Không thể trả lời câu hỏi này"
 
 
 @app.post("/analyze-image")

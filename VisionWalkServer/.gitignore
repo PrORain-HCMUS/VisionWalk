@@ -1,3 +1,4 @@
 private/
 model/
 temp_audio/
+src/utils/FirebaseAdmin.py
