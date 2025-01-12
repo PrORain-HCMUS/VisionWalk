@@ -14,8 +14,8 @@ class FirebaseAdmin:
         if not len(firebase_admin._apps):
             cred = credentials.Certificate(credentials_path)
             firebase_admin.initialize_app(cred, {
-                'storageBucket': 'vivibe-108ba.firebasestorage.app',
-                'databaseURL': 'https://vivibe-108ba-default-rtdb.firebaseio.com/'
+                'storageBucket': 'YOUR_STORAGE_BUCKET',
+                'databaseURL': 'YOUR_DB_URL'
             })
         
         self.db = firestore.client()
