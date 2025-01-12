@@ -418,7 +418,7 @@ def generate_text_of_text(text: str) -> str:
         {text}
         
         Yêu cầu:
-        - Tổng hợp trong 60-80 từ
+        - Tổng hợp trong 80-100 từ
         - Chỉ lấy những thông tin quan trọng và cốt lõi nhất
         - Phải đảm bảo câu cuối được trọn vẹn, không bị cắt ngang
         - Nếu không đủ chỗ để nêu hết, hãy chọn lọc thông tin quan trọng nhất

@@ -154,7 +154,7 @@ cd https://github.com/PrORain-HCMUS/VisionWalk
 
 To experience the VisionWalk application on your mobile device during the `demo phase`, please follow these steps:  
 
-1. **Connect Your Device**: Use a USB cable to connect your mobile device to your laptop.
+1. **Connect to local hotspot**: Open `Mobile hotspot` on the PC that host server, then connect your Phone (that uses the app) to that network.
 
 2. **Create new credential**: Github's authority doesn't allow us to upload our key in VisionWalkServer/private, so you may need to get your own ones from Google Cloud, for TTS and TTS. Sorry for the unconvenience!
 
